@@ -1,8 +1,7 @@
-import { Container } from "@mui/material";
-import "./App.css";
-import type { User } from "./CardUser";
-import CardUser from "./CardUser";
+import type { User } from "./components/CardUser";
 import { Avatar } from "./assets/images";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routers/router";
 const demoUser: User = {
   id: 1,
   name: "Phan Nguyễn Anh Khoa",
@@ -18,12 +17,9 @@ const demoUser: User = {
   },
   avatar: Avatar,
 };
+
 function App() {
-  return (
-    <Container sx={{ mt: 5 }}>
-      <CardUser user={demoUser} />
-    </Container>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
