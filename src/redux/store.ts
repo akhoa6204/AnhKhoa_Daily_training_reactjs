@@ -14,7 +14,7 @@ import { configureStore } from "@reduxjs/toolkit";
 const persistConfig = {
   key: "root",
   storage,
-  whiteList: ["favouriteList"],
+  whiteList: ["favouriteList", "account"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

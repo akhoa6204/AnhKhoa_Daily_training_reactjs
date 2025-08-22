@@ -1,15 +1,15 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Product } from "../../components/ProductList";
 import { SliceName } from "./sliceName";
+import type { IProduct } from "../../interface/product";
 
 const initialState = {
-  items: [] as Product[],
+  items: [] as IProduct[],
 };
 const favouriteListSlice = createSlice({
   name: SliceName.FavouriteList,
   initialState,
   reducers: {
-    toggleToFavourite: (state, action: PayloadAction<Product>) => {
+    toggleToFavourite: (state, action: PayloadAction<IProduct>) => {
       if (state.items.some((item) => item.id === action.payload.id)) {
         state.items = state.items.filter(
           (item) => item.id !== action.payload.id

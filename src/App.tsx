@@ -2,6 +2,7 @@ import type { User } from "./components/CardUser";
 import { Avatar } from "./assets/images";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routers/router";
+import { createTheme, ThemeProvider } from "@mui/material";
 const demoUser: User = {
   id: 1,
   name: "Phan Nguyễn Anh Khoa",
@@ -17,9 +18,14 @@ const demoUser: User = {
   },
   avatar: Avatar,
 };
+const theme = createTheme();
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ThemeProvider theme={theme}>
+      <RouterProvider router={router} />;
+    </ThemeProvider>
+  );
 }
 
 export default App;

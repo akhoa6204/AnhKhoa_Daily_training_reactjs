@@ -9,7 +9,7 @@ const ProductSkeleton = () => {
       }}
     >
       <Skeleton variant="rectangular" height={200} animation="wave" />
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ py: 2 }}>
         <Skeleton width="60%" />
         <Skeleton width="40%" />
         <Skeleton width="80%" />

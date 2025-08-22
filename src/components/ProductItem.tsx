@@ -224,7 +224,7 @@ export default function ProductItem({
           disabled={!inStock}
           sx={{ borderRadius: 4, textTransform: "none", fontWeight: 700 }}
         >
-          Add
+          ADD
         </Button>
       </CardActions>
     </MotionCard>

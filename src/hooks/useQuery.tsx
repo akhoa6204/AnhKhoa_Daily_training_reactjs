@@ -1,13 +1,6 @@
 import { useState } from "react";
+import type { IParams } from "../interface/params";
 
-export interface IParams {
-  limit?: number;
-  skip?: number;
-  q?: string;
-  select?: string | string[];
-  sortBy?: string;
-  order?: string;
-}
 const useQuery = (params: IParams) => {
   const [query, setQuery] = useState<IParams>(params);
   const updateQuery = (newQuery: IParams) => {
