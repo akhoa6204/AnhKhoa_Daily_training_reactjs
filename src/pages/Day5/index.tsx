@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
+import TableItems from "./TableBody";
 
 const tableHeads = ["ID", "Description", "Status", "Priority", "Due Date"];
 
@@ -24,8 +25,8 @@ interface FormData {
   priority: "High" | "Low" | "Medium";
   dueDate?: string;
 }
-interface Todo extends FormData {
-  id: string | number;
+export interface Todo extends FormData {
+  id: string;
 }
 const mockTodos: Todo[] = [
   {
@@ -60,12 +61,13 @@ const Day5 = () => {
     dueDate: "",
   });
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [keyword, setKeyword] = useState<string>("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => setFormData((pre) => ({ ...pre, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitAdd = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (editingId) {
@@ -104,74 +106,92 @@ const Day5 = () => {
     setTodos((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const handleEditItem = (todo: Todo) => {
+  const handleEditItem = (itemId: string) => {
+    const todo = todos.find((item) => item.id === itemId);
     setFormData({
-      description: todo.description,
-      completed: todo.completed,
-      priority: todo.priority,
-      dueDate: todo.dueDate,
+      description: todo?.description || "",
+      completed: todo?.completed || false,
+      priority: todo?.priority || "Low",
+      dueDate: todo?.dueDate || "",
     });
-    setEditingId(todo.id);
+    setEditingId(todo?.id || null);
   };
 
+  const handleSubmitSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  const handleChangeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  };
+
+  const filteredTodos = todos.filter((todo) =>
+    todo.description.toLowerCase().includes(keyword.toLowerCase())
+  );
+
   return (
-    <Container>
-      <Grid container sx={{ m: 2 }} columnSpacing={1}>
+    <Container sx={{ p: 2 }}>
+      <Box component={"form"} sx={{ mb: 2 }} onSubmit={handleSubmitSearch}>
+        <Stack direction={"row"} spacing={1}>
+          <TextField
+            label="Search todo"
+            type="text"
+            fullWidth
+            value={keyword}
+            onChange={handleChangeKeyword}
+          />
+          <Button type="submit" variant="contained">
+            Find
+          </Button>
+          {keyword && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => setKeyword("")}
+            >
+              Clear
+            </Button>
+          )}
+        </Stack>
+      </Box>
+
+      <Grid container columnSpacing={1}>
         <Grid size={8}>
           <Table>
-            {todos.length > 0 ? (
-              <>
-                <TableHead sx={{ backgroundColor: "#ddd" }}>
-                  {tableHeads.map((item) => (
-                    <TableCell key={item}>{item}</TableCell>
-                  ))}
-                  <TableCell></TableCell>
-                </TableHead>
-                <TableBody>
-                  {todos.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell>{item.id}</TableCell>
-                      <TableCell>{item.description}</TableCell>
-                      <TableCell>
-                        {item.completed ? "Active" : "UnActive"}
-                      </TableCell>
-                      <TableCell>{item.priority}</TableCell>
-                      <TableCell>{item.dueDate}</TableCell>
-                      <TableCell>
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          justifyContent="center"
-                        >
-                          <Button
-                            variant="contained"
-                            onClick={() => handleEditItem(item)}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color="error"
-                            onClick={() => handleRemoveItem(item.id)}
-                          >
-                            Remove
-                          </Button>
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </>
-            ) : (
-              <Typography fontWeight={700} textAlign={"center"}>
-                Không có việc cần làm
-              </Typography>
-            )}
+            <TableHead sx={{ backgroundColor: "#ddd" }}>
+              <TableRow>
+                {tableHeads.map((item) => (
+                  <TableCell key={item}>{item}</TableCell>
+                ))}
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredTodos.length > 0 ? (
+                filteredTodos.map((item) => (
+                  <TableItems
+                    key={item.id}
+                    handleEditItem={handleEditItem}
+                    handleRemoveItem={handleRemoveItem}
+                    {...item}
+                  />
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6}>
+                    <Typography textAlign="center" fontWeight={600}>
+                      Không tìm thấy việc nào
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
           </Table>
         </Grid>
+
         <Grid size={4}>
           <Paper sx={{ p: 2 }}>
-            <Box component="form" onSubmit={handleSubmit}>
+            <Box component="form" onSubmit={handleSubmitAdd}>
               <Typography
                 variant="h5"
                 sx={{ textAlign: "center", fontWeight: 600, mb: 2 }}
