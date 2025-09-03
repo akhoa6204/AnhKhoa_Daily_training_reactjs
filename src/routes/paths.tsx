@@ -1,6 +1,5 @@
 import HomePage from "../pages/Home";
 import LoginPage from "../pages/Login";
-import WeatherApp from "../pages/WeatherApp";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 

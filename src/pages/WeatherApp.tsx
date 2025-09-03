@@ -69,7 +69,7 @@ const WeatherApp = () => {
     };
     setLoading(true);
     httpClient
-      .get("/weather", { params })
+      .get(`${import.meta.env.VITE_API_WEATHER_KEY}/weather`, { params })
       .then((res) => {
         setData(res.data);
       })
