@@ -1,5 +1,6 @@
 import HomePage from "../pages/Home";
 import LoginPage from "../pages/Login";
+import ReusableUi from "../pages/ReusableUI";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 
@@ -23,6 +24,7 @@ const paths = [
       },
     ],
   },
+  { path: "/reusable-ui", element: <ReusableUi /> },
   { path: "*", element: <HomePage /> },
 ];
 export default paths;
